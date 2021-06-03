@@ -63,3 +63,8 @@ char			*ft_itoa(long long k, int base)
 	}
 	return (s);
 }
+
+int	ft_isdigit(int c)
+{
+	return (c >= '0' && c <= '9');
+}
