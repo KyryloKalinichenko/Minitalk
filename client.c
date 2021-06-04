@@ -33,7 +33,6 @@ void    int_to_by(int i, int pid)
         usleep(10000);
         cnt--;
     }
-    exit(0);
 }
 
 void    char_to_by(unsigned char i, int pid)
@@ -74,7 +73,8 @@ int main(int argc, char **argv)
         exit(0);
     pid = get_pid(argv[1]);
     //send_str(argv[2], pid);
-    int_to_by(111, pid);
-    printf("%i\n", pid);
+    int_to_by(getpid(), pid);
+    int_to_by(ft_strlen(argv[2]), pid);
+    printf("%i\n", getpid());
     return (0);
 }

@@ -6,8 +6,15 @@
 #include <stdio.h>
 #include <signal.h>
 
+typedef struct s_list
+{
+	int	    cl_pid;
+	int 	len;
+}					t_list;
+
 char			*ft_itoa(long long k, int base);
 int             ft_isdigit(int c);
 int             ft_atoi(const char *str);
+int ft_strlen(char *s);
 
 # endif

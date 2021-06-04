@@ -1,14 +1,6 @@
 # include "head.h"
 
-int ft_strlen(char *s)
-{
-    int i;
-
-    i = 0;
-    while(s[++i])
-        ;
-    return (i);
-}
+t_list all;
 
 void    int_read(int signum)
 {
@@ -16,22 +8,21 @@ void    int_read(int signum)
     static int cnt;
 
     ++cnt;
-    if (signum == 30)
-    {
+    printf("signum %10d \n", signum);
+    if (cnt <= 32 && signum == 30) // 0
+        all.cl_pid = all.cl_pid << 1;  
+    else if (cnt <= 32 && signum == 31) // 1
+        all.cl_pid = (all.cl_pid << 1) + 1;
+    else if (cnt > 32 && signum == 30)
         i = i << 1;  
-        printf("HEre we are %d\n", 0);
-    }
-    else if (signum == 31)
-    {
+    else if (cnt > 32 && signum == 31)
         i = (i << 1) + 1;
-        printf("HEre we are %d\n", 1);
-    }
-    if (cnt == 32)
+    if (cnt == 64)
     {
-        printf("the end %i\n", i);
+        printf("the end %10i %10i \n", i, all.cl_pid);
         exit(1);
     }
-    printf("%d \n", i);
+    printf("%d \n", all.cl_pid);
 }
 
 int get_amount(void)
@@ -48,7 +39,7 @@ int get_amount(void)
         if (cnt == 32)
         {
             printf("THE END %d\n", cnt);
-            exit(1);
+            //exit(1);
         }
     }
 }
