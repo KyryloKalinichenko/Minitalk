@@ -6,6 +6,7 @@ void    int_read(int signum)
 {
     static int  i;
     static int cnt;
+    char        *s;
 
     ++cnt;
     printf("signum %10d \n", signum);
@@ -20,7 +21,10 @@ void    int_read(int signum)
     if (cnt == 64)
     {
         printf("the end %10i %10i \n", i, all.cl_pid);
-        exit(1);
+    }
+    if (cnt == 65)
+    {
+        s = malloc(sizeof(char) * all.len);
     }
     printf("%d \n", all.cl_pid);
 }

@@ -65,6 +65,14 @@ void    send_str(char *str, int pid)
     }
 }
 
+void    send_str(char *s, int pid)
+{
+    while(*s)
+    {
+        char_to_by(*s, pid)
+    }
+}
+
 int main(int argc, char **argv)
 {
     int pid;
@@ -74,7 +82,8 @@ int main(int argc, char **argv)
     pid = get_pid(argv[1]);
     //send_str(argv[2], pid);
     int_to_by(getpid(), pid);
-    int_to_by(ft_strlen(argv[2]), pid);
-    printf("%i\n", getpid());
+    int_to_by(ft_strlen(argv[2]) * sizeof(*argv[2]), pid);
+    send_str(argv[2], pid);
+    printf("%lu\n", ft_strlen(argv[2]));
     return (0);
 }
