@@ -19,21 +19,38 @@ void    send_int(int i)
 
 }*/
 
-int    int_to_by(int i, int pid)
+void    int_to_by(int i, int pid)
 {
     int cnt;
 
-    cnt = 32;
+    cnt = 31;
     while(cnt > -1)
     {
         if (((i >> cnt) & 1))
             kill(pid, SIGUSR2); // 1
         else
             kill(pid, SIGUSR1); // 0
-        system("sleep 1");
+        usleep(10000);
         cnt--;
     }
     exit(0);
+}
+
+void    char_to_by(unsigned char i, int pid)
+{
+    int cnt;
+
+    cnt = 7;
+    while(cnt > -1)
+    {
+        if (((i >> cnt) & 1))
+            kill(pid, SIGUSR2); // 1
+        else
+            kill(pid, SIGUSR1); // 0
+        usleep(10000);
+        cnt--;
+    }
+    printf("%d\n", i);
 }
 
 void    send_str(char *str, int pid)
@@ -45,8 +62,7 @@ void    send_str(char *str, int pid)
     b = 0;
     while(str[++i])
     {
-        b = int_to_by(str[i], pid);
-       // send_int(b);
+        char_to_by(str[i], pid);
     }
 }
 
@@ -58,7 +74,7 @@ int main(int argc, char **argv)
         exit(0);
     pid = get_pid(argv[1]);
     //send_str(argv[2], pid);
-    int_to_by(50, pid);
+    int_to_by(111, pid);
     printf("%i\n", pid);
     return (0);
 }
