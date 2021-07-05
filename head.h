@@ -9,7 +9,11 @@
 typedef struct s_list
 {
 	int	    cl_pid;
+	//int 	len;
+	int		cnt;
+	char	*str;
 	int 	len;
+	int 	tmp;
 }					t_list;
 
 char			*ft_itoa(long long k, int base);

@@ -61,17 +61,17 @@ void    send_str(char *str, int pid)
     b = 0;
     while(str[++i])
     {
-        char_to_by(str[i], pid);
+        int_to_by(str[i], pid);
     }
 }
 
-void    send_str(char *s, int pid)
-{
-    while(*s)
-    {
-        char_to_by(*s, pid)
-    }
-}
+// void    send_str(char *s, int pid)
+// {
+//     while(*s)
+//     {
+//         char_to_by(*s, pid);
+//     }
+// }
 
 int main(int argc, char **argv)
 {
@@ -81,9 +81,10 @@ int main(int argc, char **argv)
         exit(0);
     pid = get_pid(argv[1]);
     //send_str(argv[2], pid);
+    printf("%d\n", getpid());
     int_to_by(getpid(), pid);
     int_to_by(ft_strlen(argv[2]) * sizeof(*argv[2]), pid);
     send_str(argv[2], pid);
-    printf("%lu\n", ft_strlen(argv[2]));
+    printf("%d\n", ft_strlen(argv[2]));
     return (0);
 }
