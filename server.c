@@ -28,63 +28,57 @@ void	*ft_calloc(size_t nmemb, size_t size)
 
 void    int_read(int signum)
 {
-    //static int  i;
-    //static int cnt;
     int         ind;
-    //char        *s;
 
     ++all.cnt;
     ind = 0;
-    printf("signum %10d \n", signum);
     if (all.cnt <= 32 && signum == 30) // 0
         all.cl_pid = all.cl_pid << 1;  
     else if (all.cnt <= 32 && signum == 31) // 1
         all.cl_pid = (all.cl_pid << 1) + 1;
-    else if (all.cnt > 32 && signum == 30)
+    else if (all.cnt > 32 && signum == 30 && all.cnt <= 64)
         all.len = all.len << 1;  
-    else if (all.cnt > 32 && signum == 31)
+    else if (all.cnt > 32 && signum == 31 && all.cnt <= 64)
         all.len = (all.len << 1) + 1;
     if (all.cnt == 64)
     {
-        printf("THE pid %10i THE len %10i\n", all.cl_pid, all.len);
         all.str = ft_calloc(sizeof(char), all.len);
     }
-    if (all.cnt > 64)
+    if (all.cnt > 64 && ft_strlen(all.str) != all.len)
     {
         ind = (all.cnt - 64) / 32;
-        //printf("%20i\n", ind);
         if (signum == 30) // 0
             all.tmp = all.tmp << 1;  
         else if (signum == 31) // 1
             all.tmp = (all.tmp << 1) + 1;
         if (!((all.cnt - 64) % 32))
         {
-            printf("cond %30i %10i \n", all.tmp, ind - 1);
             all.str[ind - 1] = all.tmp;
             all.tmp = 0;
         }
-        printf("STRING  ---%s---\n", all.str);
-    }
-    //printf("%d \n", all.cl_pid);
-}
-
-int get_amount(void)
-{
-    static int cnt;
-
-    signal(SIGUSR1, int_read);
-    signal(SIGUSR2, int_read);
-    //signal(SIGUSR2, int_read);
-    while (1)
-    {
-        //rintf("kek\n");
-        usleep(10000);
-        if (cnt == 32)
+        if (ft_strlen(all.str) == all.len)
         {
-            printf("THE END %d\n", cnt);
-            exit(1);
+            //printf("STRING  ---%s---\n", all.str);
+            write(1, all.str, all.len);
+            write(1, "\n", 1);
+            free(all.str);
+            all.cnt = 0;
+            all.len = 0;
+            all.cl_pid = 0;
+            all.tmp = 0;
         }
     }
+    else if (all.cnt > 64)
+    {
+        write(1, "Error\n", 6);
+        exit(0);
+    }
+}
+
+void get_amount(void)
+{
+    signal(SIGUSR1, int_read);
+    signal(SIGUSR2, int_read);
 }
 
 int main(void)
@@ -96,10 +90,8 @@ int main(void)
         exit(0);
     write(1, pid, ft_strlen(pid));
     write(1, "\n", 1);
+    free(pid);
     get_amount();
     while (1)
-    {
-        //printf("lol\n");
-        usleep(10000);
-    }
+        usleep(1000);
 }

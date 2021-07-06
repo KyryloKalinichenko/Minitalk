@@ -10,14 +10,8 @@ int get_pid(char *str)
         if (!ft_isdigit(str[i]))
             exit(0);
     }
-    printf("%s\n", str);
     return(ft_atoi(str));
 }
-/*
-void    send_int(int i)
-{
-
-}*/
 
 void    int_to_by(int i, int pid)
 {
@@ -30,7 +24,7 @@ void    int_to_by(int i, int pid)
             kill(pid, SIGUSR2); // 1
         else
             kill(pid, SIGUSR1); // 0
-        usleep(10000);
+        usleep(1000);
         cnt--;
     }
 }
@@ -46,10 +40,9 @@ void    char_to_by(unsigned char i, int pid)
             kill(pid, SIGUSR2); // 1
         else
             kill(pid, SIGUSR1); // 0
-        usleep(10000);
+        usleep(1000);
         cnt--;
     }
-    printf("%d\n", i);
 }
 
 void    send_str(char *str, int pid)
@@ -65,26 +58,19 @@ void    send_str(char *str, int pid)
     }
 }
 
-// void    send_str(char *s, int pid)
-// {
-//     while(*s)
-//     {
-//         char_to_by(*s, pid);
-//     }
-// }
-
 int main(int argc, char **argv)
 {
     int pid;
 
-    if (argc < 3 || argc > 3)
+    if (argc < 3 || argc > 3 || !argv[2] || !ft_strlen(argv[2]))
         exit(0);
+    //printf("%d\n", ft_strlen(argv[2]));
     pid = get_pid(argv[1]);
     //send_str(argv[2], pid);
-    printf("%d\n", getpid());
+    //printf("%d\n", getpid());
     int_to_by(getpid(), pid);
     int_to_by(ft_strlen(argv[2]) * sizeof(*argv[2]), pid);
     send_str(argv[2], pid);
-    printf("%d\n", ft_strlen(argv[2]));
+    //printf("%d\n", ft_strlen(argv[2]));
     return (0);
 }
