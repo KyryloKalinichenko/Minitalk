@@ -58,12 +58,12 @@ int	ft_atoi(const char *str)
 
 int	ft_strlen(char *s)
 {
-    int	i;
+	int	i;
 
 	i = 0;
 	if (!s)
 		return (0);
-    while (s[i])
+	while (s[i])
 		i++;
 	return (i);
 }
