@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   atoi.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalinic <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/07/07 14:03:32 by kkalinic          #+#    #+#             */
+/*   Updated: 2021/07/07 14:03:34 by kkalinic         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "head.h"
 
 int	ft_isotherwhitespace(char c)
@@ -18,7 +30,7 @@ int	ft_iswhitespace(char c)
 int	ft_atoi(const char *str)
 {
 	int						i;
-	long long int	nbr;
+	long long int			nbr;
 	long long int			sign;
 
 	i = 0;
@@ -44,14 +56,14 @@ int	ft_atoi(const char *str)
 	return (nbr * sign);
 }
 
-int ft_strlen(char *s)
+int	ft_strlen(char *s)
 {
-    int i;
+    int	i;
 
-    i = 0;
+	i = 0;
 	if (!s)
 		return (0);
-    while(s[++i])
-        ;
-    return (i);
+    while (s[i])
+		i++;
+	return (i);
 }

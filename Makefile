@@ -1,6 +1,7 @@
 SRCS_S = 	server.c \
 			atoi.c \
 			itoa.c \
+			main.c \
 
 SRCS_C =	client.c \
 			atoi.c \
@@ -32,3 +33,5 @@ fclean:			clean
 re:				fclean $(SERVER) $(CLIENT)
 
 .PHONY:			all clean fclean re
+
+# -fsanitize=address

@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   itoa.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalinic <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/07/07 14:05:40 by kkalinic          #+#    #+#             */
+/*   Updated: 2021/07/07 14:25:26 by kkalinic         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "head.h"
 
-static int		ft_len(long long n, int base)
+static int	ft_len(long long n, int base)
 {
-	long int k;
+	long int	k;
 
 	k = 1;
 	if (n == 0)
@@ -27,7 +39,7 @@ static int		ft_len(long long n, int base)
 	return (k);
 }
 
-char			*ft_sign(char *s, long long n, int len)
+char	*ft_sign(char *s, long long n, int len)
 {
 	while (n <= -10)
 	{
@@ -39,13 +51,14 @@ char			*ft_sign(char *s, long long n, int len)
 	return (s);
 }
 
-char			*ft_itoa(long long k, int base)
+char	*ft_itoa(long long k, int base)
 {
 	char			*s;
 	int				p;
 
 	p = ft_len(k, base);
-	if (!(s = malloc(sizeof(char) * (p + 1))))
+	s = malloc(sizeof(char) * (p + 1));
+	if (!s)
 		return (NULL);
 	s[p] = '\0';
 	if (k == 0)

@@ -1,97 +1,86 @@
-# include "head.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kkalinic <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/07/07 14:25:34 by kkalinic          #+#    #+#             */
+/*   Updated: 2021/07/07 14:59:31 by kkalinic         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-t_list all;
+#include "head.h"
 
-void	ft_bzero(void *s, size_t n)
+t_list	g_all;
+
+void	for_one(void)
 {
-	unsigned char *n_s;
-
-	n_s = s;
-	while (n)
+	g_all.str[0] = g_all.tmp;
+	g_all.tmp = 0;
+	if (ft_strlen(g_all.str) == g_all.len)
 	{
-		*n_s = '\0';
-		n_s++;
-		n--;
+		write(1, g_all.str, g_all.len);
+		write(1, "\n", 1);
+		free(g_all.str);
+		g_all.cnt = 0;
+		g_all.len = 0;
+		g_all.cl_pid = 0;
+		g_all.tmp = 0;
 	}
 }
 
-void	*ft_calloc(size_t nmemb, size_t size)
+void	for_other(int ind)
 {
-	unsigned char *arr;
-
-	arr = malloc(size * nmemb);
-	if (arr == NULL)
-		return (NULL);
-	ft_bzero(arr, nmemb * size);
-	return (arr);
+	g_all.str[ind - 1] = g_all.tmp;
+	g_all.tmp = 0;
+	if (ft_strlen(g_all.str) == g_all.len)
+	{
+		write(1, g_all.str, g_all.len);
+		write(1, "\n", 1);
+		free(g_all.str);
+		g_all.cnt = 0;
+		g_all.len = 0;
+		g_all.cl_pid = 0;
+		g_all.tmp = 0;
+	}
 }
 
-void    int_read(int signum)
+void	read_str(int signum, int ind)
 {
-    int         ind;
-
-    ++all.cnt;
-    ind = 0;
-    if (all.cnt <= 32 && signum == 30) // 0
-        all.cl_pid = all.cl_pid << 1;  
-    else if (all.cnt <= 32 && signum == 31) // 1
-        all.cl_pid = (all.cl_pid << 1) + 1;
-    else if (all.cnt > 32 && signum == 30 && all.cnt <= 64)
-        all.len = all.len << 1;  
-    else if (all.cnt > 32 && signum == 31 && all.cnt <= 64)
-        all.len = (all.len << 1) + 1;
-    if (all.cnt == 64)
-    {
-        all.str = ft_calloc(sizeof(char), all.len);
-    }
-    if (all.cnt > 64 && ft_strlen(all.str) != all.len)
-    {
-        ind = (all.cnt - 64) / 32;
-        if (signum == 30) // 0
-            all.tmp = all.tmp << 1;  
-        else if (signum == 31) // 1
-            all.tmp = (all.tmp << 1) + 1;
-        if (!((all.cnt - 64) % 32))
-        {
-            all.str[ind - 1] = all.tmp;
-            all.tmp = 0;
-        }
-        if (ft_strlen(all.str) == all.len)
-        {
-            //printf("STRING  ---%s---\n", all.str);
-            write(1, all.str, all.len);
-            write(1, "\n", 1);
-            free(all.str);
-            all.cnt = 0;
-            all.len = 0;
-            all.cl_pid = 0;
-            all.tmp = 0;
-        }
-    }
-    else if (all.cnt > 64)
-    {
-        write(1, "Error\n", 6);
-        exit(0);
-    }
+	ind = (g_all.cnt - 64) / 32;
+	if (signum == 30)
+		g_all.tmp = g_all.tmp << 1;
+	else if (signum == 31)
+		g_all.tmp = (g_all.tmp << 1) + 1;
+	if (!((g_all.cnt - 64) % 32) && g_all.len != 1)
+		for_other(ind);
+	else if (g_all.len == 1 && g_all.cnt - 64 == 32)
+		for_one();
 }
 
-void get_amount(void)
+void	int_read(int signum)
 {
-    signal(SIGUSR1, int_read);
-    signal(SIGUSR2, int_read);
+	int	ind;
+
+	++g_all.cnt;
+	ind = 0;
+	if (g_all.cnt <= 32 && signum == 30)
+		g_all.cl_pid = g_all.cl_pid << 1;
+	else if (g_all.cnt <= 32 && signum == 31)
+		g_all.cl_pid = (g_all.cl_pid << 1) + 1;
+	else if (g_all.cnt > 32 && signum == 30 && g_all.cnt <= 64)
+		g_all.len = g_all.len << 1;
+	else if (g_all.cnt > 32 && signum == 31 && g_all.cnt <= 64)
+		g_all.len = (g_all.len << 1) + 1;
+	if (g_all.cnt == 64)
+		g_all.str = ft_calloc(sizeof(char), g_all.len + 1);
+	if (g_all.cnt > 64)
+		read_str(signum, ind);
 }
 
-int main(void)
+void	get_amount(void)
 {
-    char *pid;
-
-    pid = ft_itoa(getpid(), 10);
-    if (!pid)
-        exit(0);
-    write(1, pid, ft_strlen(pid));
-    write(1, "\n", 1);
-    free(pid);
-    get_amount();
-    while (1)
-        usleep(1000);
+	signal(SIGUSR1, int_read);
+	signal(SIGUSR2, int_read);
 }
