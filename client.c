@@ -70,7 +70,7 @@ void	send_str(char *str, int pid)
 	i = -1;
 	b = 0;
 	while (str[++i])
-		int_to_by(str[i], pid);
+		char_to_by(str[i], pid);
 }
 
 int	main(int argc, char **argv)

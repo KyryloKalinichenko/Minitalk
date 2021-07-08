@@ -48,14 +48,14 @@ void	for_other(int ind)
 
 void	read_str(int signum, int ind)
 {
-	ind = (g_all.cnt - 64) / 32;
+	ind = (g_all.cnt - 64) / 8;
 	if (signum == 30)
 		g_all.tmp = g_all.tmp << 1;
 	else if (signum == 31)
 		g_all.tmp = (g_all.tmp << 1) + 1;
-	if (!((g_all.cnt - 64) % 32) && g_all.len != 1)
+	if (!((g_all.cnt - 64) % 8) && g_all.len != 1)
 		for_other(ind);
-	else if (g_all.len == 1 && g_all.cnt - 64 == 32)
+	else if (g_all.len == 1 && g_all.cnt - 64 == 8)
 		for_one();
 }
 
