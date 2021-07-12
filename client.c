@@ -41,7 +41,7 @@ void	int_to_by(int i, int pid)
 			kill(pid, SIGUSR2);
 		else
 			kill(pid, SIGUSR1);
-		usleep(1000);
+		usleep(100);
 		cnt--;
 	}
 }
@@ -57,7 +57,7 @@ void	char_to_by(unsigned char i, int pid)
 			kill(pid, SIGUSR2);
 		else
 			kill(pid, SIGUSR1);
-		usleep(1000);
+		usleep(100);
 		cnt--;
 	}
 }

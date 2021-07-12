@@ -48,5 +48,5 @@ int	main(void)
 	free(pid);
 	get_amount();
 	while (1)
-		usleep(1000);
+		usleep(10);
 }
